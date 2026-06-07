@@ -21,6 +21,11 @@ import time, random
 #----------------------------------------------------------------------------------------------
 
 #VALIDACIONES
+def titular (mensaje):
+    print("=" * 90)
+    print(mensaje.center(90))
+    print("=" * 90)
+    print()
 
 def validarNumero(num):
     while True:
@@ -74,7 +79,7 @@ def generarValores(cantValores,lista):
     docstring
     '''
     if lista:
-        eleccion =validarSiNo(input("Lista ya creada anteriormente, desea generar una nueva lista? (S/N): \n"))
+        eleccion =validarSiNo(input("Lista ya creada anteriormente, desea generar una nueva lista? (S/N): "))
         if eleccion:
             listaNuevaVacia = [] # Crea una nueva lista
             listarRandom(listaNuevaVacia, cantValores)
@@ -85,6 +90,9 @@ def generarValores(cantValores,lista):
         print("Primera vez que se crea la lista")
         print()
         listarRandom(lista, cantValores)
+        if lista: print("Lista creada correctamente.")
+        else: print("ERROR al crear la lista")
+
     return lista
 
 #   TAREA 2
@@ -98,7 +106,7 @@ def mostrarValores(miLista, titulo):
     else:
 
         print("*" * 90)
-        print(titulo)
+        print(f"VALORES DEL JUEGO DE DATOS ({titulo})")
         print("*" * 90)
 
         guion="="*7
@@ -145,41 +153,39 @@ def criterioFiltro(miLista):
     criterio = input("Ingrese el criterio de filtrado [M=Mayores que | E=Menores que | R=En rango | P=Pares | I=Impares]: ")
     while True:
         if criterio in ["M", "m"]:
-            valor = validarNumero(input("Criterio de filtrado: Mayores que:  "))
+            valor = validarNumero(input("Criterio de filtrado: Mayores que: "))
             for elem in lista:
                 if elem > valor:
                     listaResultado.append(elem)
-            return mostrarValores(listaResultado, f"VALORES DEL JUEGO DE DATOS (Mayores que {valor})")
+            return print ("\n"),mostrarValores(listaResultado, f"Mayores que {valor}")
 
         elif criterio in ["E", "e"]:
             valor = validarNumero(input("Criterio de filtrado: Menores que:  "))
             for elem in lista:
                 if elem < valor:
                     listaResultado.append(elem)
-            return mostrarValores(listaResultado, f"VALORES DEL JUEGO DE DATOS (Menores que {valor})")
+            return print ("\n"), mostrarValores(listaResultado, f"Menores que {valor}")
         
         elif criterio in ["R", "r"]:
-            limInferior = validarNumero(input("Criterio de filtrado: En rango.\nIngrese el limite inferior:  "))
+            limInferior = validarNumero(input("Criterio de filtrado: En rango \nIngrese el limite inferior: "))
             limSuperior = validarNumero(input("Ingrese el limite superior: "))
 
             for elem in lista:
                 if elem > limInferior and elem < limSuperior:
                     listaResultado.append(elem)
-            return mostrarValores(listaResultado, f"VALORES DEL JUEGO DE DATOS (VALORES ENTRE {limInferior} y {limSuperior})")
+            return print ("\n"), mostrarValores(listaResultado, f"VALORES ENTRE {limInferior} y {limSuperior}")
         
         elif criterio in ["P", "p"]:
-            print("Criterio de filtrado: Valores Pares")
             for elem in lista:
                 if elem % 2 == 0:
                     listaResultado.append(elem)
-            return mostrarValores(listaResultado, f"VALORES DEL JUEGO DE DATOS (VALORES PARES)")
+            return print ("\n"), mostrarValores(listaResultado, f"VALORES PARES")
 
         elif criterio in ["I", "i"]:
-            print("Criterio de filtrado: Valores Impares")
             for elem in lista:
                 if elem % 2 == 1:
                     listaResultado.append(elem)
-            return mostrarValores(listaResultado, f"VALORES DEL JUEGO DE DATOS (VALORES IMPARES)")
+            return print ("\n"), mostrarValores(listaResultado, f"VALORES IMPARES")
 
         
         criterio = input("Valor ingresado incorreco.\nIngrese el criterio de filtrado [M=Mayores que | E=Menores que | R=En rango | P=Pares | I=Impares]: ")
@@ -245,11 +251,9 @@ def desdoblarValores(miLista):
         #Validación del umbral
         if criterio == "U":
             umbral = (input("Elija el valor umbral para desdoblar las listas: "))
-            print()
             while not umbral.isdigit() or int(umbral) <= 0:
                 print("Valor inválido, intente de nuevo")
                 umbral = (input("Elija el valor umbral para desdoblar las listas: "))
-                print()
             umbral = int(umbral)
             
                 
@@ -266,7 +270,7 @@ def desdoblarValores(miLista):
                 if lista[pos] % 2 != 0:
                     lista2.append(lista[pos])
                 pos = pos + 1
-            return mostrarValores(lista1, f"VALORES DEL JUEGO DE DATOS (PARES)"),print("\n"), mostrarValores(lista2, f"VALORES DEL JUEGO DE DATOS (IMPARES)")
+            return print("\n"), mostrarValores(lista1, f"PARES"),print("\n"), mostrarValores(lista2, f"IMPARES")
         
         #Separación de listas por umbral
         elif criterio == "U":
@@ -280,7 +284,7 @@ def desdoblarValores(miLista):
                 if (lista[pos]) < umbral:
                     lista2.append(lista[pos])
                 pos = pos + 1
-            return mostrarValores(lista2, f"VALORES DEL JUEGO DE DATOS (MENORES QUE {umbral})"),print("\n"), mostrarValores(lista1, f"VALORES DEL JUEGO DE DATOS (MAYORES QUE {umbral})")
+            return print("\n"),mostrarValores(lista2, f"MENORES QUE {umbral}"),print("\n"), mostrarValores(lista1, f"MAYORES QUE {umbral}")
             
         #Separación de listas por cifras
         elif criterio == "C":
@@ -299,7 +303,7 @@ def desdoblarValores(miLista):
                 if len(str(lista[pos])) == 5:   # == 5
                     lista3.append(lista[pos])
                 pos = pos + 1
-            return mostrarValores(lista1, f"VALORES DEL JUEGO DE DATOS (UNA CIFRA)"),print("\n"), mostrarValores(lista2, f"VALORES DEL JUEGO DE DATOS (TRES CIFRAS)"), print("\n"), mostrarValores(lista3, "VALORES DEL JUEGO DE DATOS (CINCO CIFRAS)")
+            return print("\n"), mostrarValores(lista1, f"UNA CIFRA"),print("\n"), mostrarValores(lista2, f"TRES CIFRAS"), print("\n"), mostrarValores(lista3, "CINCO CIFRAS")
             
 #   TAREA 6 VALORES TOP N
 def valoresTop(miLista):
@@ -348,7 +352,7 @@ def mostrarMaximosMinimos(miLista,titulo):
     else:
 
         print("*" * 90)
-        print(titulo)
+        print(F"VALORES DEL JUEGO DE DATOS ({titulo})")
         print("*" * 90)
 
         guion="="*7
@@ -440,37 +444,35 @@ def main():
             exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
 
         elif opcion == "1":   # Opción 1
-            
-            print("[1] Generar valores\n")
+            titular("[1] Generar valores")
             cantValores = input("Ingrese la cantidad de valores a generar: ")
             cantValores = validacionNumMayor2(cantValores)
             miLista = generarValores(cantValores,miLista)
-
-            print(miLista)
-
             
          
         elif opcion == "2":   # Opción 2
-            print("[2] Mostrar valores\n")
-            mostrarValores(miLista, "VALORES DEL JUEGO DE DATOS (TODOS LOS DATOS)")
+            titular("[2] Mostrar valores")
+            mostrarValores(miLista, "TODOS LOS DATOS")
             ...
         elif opcion == "3":   # Opción 3
-            print("[3] Eliminar valores repetidos\n")
+            titular("[3] Eliminar valores repetidos")
             sinRep, contRepetidos = eliminarRepetidos(miLista)
-            mostrarValores(sinRep, "VALORES DEL JUEGO DE DATOS (DATOS SIN REPETIDOS)")
+            mostrarValores(sinRep, "DATOS SIN REPETIDOS")
             print (f"\nCANTIDAD DE REPETIDOS ELIMINADOS = {contRepetidos}")
             ...
         elif opcion == "4":   # Opción 4
-            print("[4] Filtrar Valores\n")
+            titular("[4] Filtrar Valores")
             criterioFiltro(miLista)
         elif opcion == "5":   # Opción 5
-            print("[5] Desdoblar Valores\n")
+            titular("[5] Desdoblar Valores")
             desdoblarValores(miLista)
         elif opcion == "6":   # Opción 6
+            titular("[6] Valores TOP N")
             listaTop, cont = eliminarRepetidos(miLista)
             valoresTop(listaTop)
         elif opcion == "7":   # Opción 7
-            mostrarMaximosMinimos(miLista, f"VALORES MAXIMOS Y MINIMOS")
+            titular("[7] Valores máximos y mínimos")
+            mostrarMaximosMinimos(miLista, f"DATOS MÁXIMOS Y MÍNIMOS [máx] (mín) <máx/mín>")
 
 
         input("\nPresione ENTER para volver al menú.")
