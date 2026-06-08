@@ -22,12 +22,26 @@ import time, random
 
 #VALIDACIONES
 def titular (mensaje):
+    '''
+    -Imprime un titulo para los encabezados de las opciones
+    -Parametros:
+        mensaje (str): Mensaje que se desea aplicar el formato
+    -Retorno:
+        (print) Mensaje en formato de encabezado
+    '''
     print("=" * 90)
     print(mensaje.center(90))
     print("=" * 90)
     print()
 
 def validarNumero(num):
+    '''
+    -Valida que el dato ingresado pueda ser convertido en un entero
+    -Parametros:
+        num (str): Valor a verificar
+    -Retorno:
+        (int) : valor ingresado convertido en (int)
+    '''
     while True:
         if not num.isdigit():
             print("Entrada no valida. Por favor ingrese un número entero")
@@ -36,6 +50,13 @@ def validarNumero(num):
         num = input("   Tiene que ser un número entero: ")
 
 def validarSiNo(opcion): #Valida que la entrada sea S, N, True o False con sus variantes
+    '''
+    -Valida que el valor ingresado por el usuario (Si o No) en sus variantes sea reconocido como True or False
+    -Paramtros:
+        opcion (str): valor a verificar
+    -Rertorno:
+        (bool) : True si ingreso S o sus variantes / False caso contrario
+    '''
     while True:
         if opcion not in ["S", "N", "n", "s", "True", "False"]:
             print("Valor no válido. Ingrese S o N.")
@@ -46,6 +67,13 @@ def validarSiNo(opcion): #Valida que la entrada sea S, N, True o False con sus v
         opcion = input("¿Desea generar una nueva lista? (S/N): ")
 
 def validacionNumMayor2(num):
+    '''
+    -Valida que el dato ingresado pueda ser convertido en un entero y mayor a 2
+    -Parametros:
+        num (str): Valor a verificar entero y mayor a dos
+    -Retorno:
+        (int) : valor ingresado convertido en (int)
+    '''
     while True:
         if not num.isdigit():
             mensaje = "Entrada inválida. Por favor, ingrese un número entero."
@@ -65,6 +93,17 @@ def validacionNumMayor2(num):
 
 #   TAREA 1
 def listarRandom(lista, cantValores):
+    '''
+    Asigna a la lista valores de 1,3,5 digitos de forma aleatoria con igual probabilidad de ocurrencia
+    Tres valores al azar: el primero de 1 digido, el segundo de 3 digitos y el tercero de 5 digitos
+    Elije uno de los 3 al azar y lo agrega a la lista
+    Repite hasta que el tamaño de la lista deje de ser menor que la cantidad de valores deseada
+    -Parametros: 
+        lista (list): Lista a la cual se le agregaran los valores
+        canValores (int): Cantidad de valores que se le agregara a la lista
+    -Retorno:
+        (None): Agrega los valores a la lista 
+    '''
     while len(lista) < cantValores:
 
         valor1 = random.randint(0, 9) 
@@ -76,7 +115,14 @@ def listarRandom(lista, cantValores):
 
 def generarValores(cantValores,lista):
     ''' 
-    docstring
+    -Si ya existia una lista generada anteriormente, informa y solicita confirmacion antes de reemplazarla.
+    Y si es la primera vez, genera los valores de la lista, usa la funcion anterior listarRandom()
+    -Parametros:
+        cantValores (int): Cantidad de valores a agregar a la lista
+        lista (list): Lista a evaluar si ya existia o no, y que sera modificada
+    -Retorno:
+        (list): lista modificada o no segun eleccion
+        (print): En el caso de Error, o si no se elige modificar una lista ya creada
     '''
     if lista:
         eleccion =validarSiNo(input("Lista ya creada anteriormente, desea generar una nueva lista? (S/N): "))
@@ -84,6 +130,7 @@ def generarValores(cantValores,lista):
             listaNuevaVacia = [] # Crea una nueva lista
             listarRandom(listaNuevaVacia, cantValores)
             lista = listaNuevaVacia # Asigna la nueva lista a la variable original
+    
         else:
             print("No se generará una nueva lista.") 
     else:
@@ -99,6 +146,14 @@ def generarValores(cantValores,lista):
 Letras=["A","B","C","D","E","F","G","H","I","J"]
 
 def mostrarValores(miLista, titulo):
+    '''
+    -Presenta los valores en formato de tabla encolumnada y cerrada, con 10 valores por fila, repetando el formato de la consigna
+    -Parametros:
+        miLista (list): Lista a dar formato
+        titulo (str): Mensaje personalisado para usarlo en otros puntos
+    -Retorno:
+        (print): Imprime la tabla en formato de la consigna
+    '''
     filas=0
 
     if len(miLista) == 0: #Cambiar segun funcion 1
@@ -136,6 +191,15 @@ def mostrarValores(miLista, titulo):
 
 #   TAREA 3 ELIMINAR VALORES REPETIDOS
 def eliminarRepetidos(lista):
+    '''
+    - Genera y muestra una nueva lista a partir de la original, eliminando los valores duplicados
+    conservando el orden de primera aparición de cada valor, informando tambien cuantos valores fueron eliminados
+    -Parametros:
+        lista (list): Lista a eliminar valores repetidos
+    -Retorno:
+        (list) resultado: lista nueva sin los valores repetidos
+        (int) contadorRepetidos: Cantidad de valores repetidos y eliminados
+    '''
     lista3 = lista[:]
     resultado = []
     contadorRepetidos = 0
@@ -148,48 +212,57 @@ def eliminarRepetidos(lista):
 
 #   TAREA 4 FILTRAR VALORES
 def criterioFiltro(miLista):
+
     lista = miLista[:]
     listaResultado = []
+    if len(lista) == 0:
+        print("No hay valores generados")
+        return
     criterio = input("Ingrese el criterio de filtrado [M=Mayores que | E=Menores que | R=En rango | P=Pares | I=Impares]: ")
-    while True:
-        if criterio in ["M", "m"]:
-            valor = validarNumero(input("Criterio de filtrado: Mayores que: "))
-            for elem in lista:
-                if elem > valor:
-                    listaResultado.append(elem)
-            return print ("\n"),mostrarValores(listaResultado, f"Mayores que {valor}")
+    criterio = criterio.upper()
+    while criterio != "M" and criterio != "E" and criterio != "R" and criterio != "P" and criterio != "I":
+        print("Error! criterio incorrecto")
+        criterio = input("Ingrese el criterio de filtrado [M=Mayores que | E=Menores que | R=En rango | P=Pares | I=Impares]: ")
+        criterio = criterio.upper()
+    
+    if criterio == "M":
+        num = validarNumero(input("Criterio de filtrado: Mayores que: "))
+        for valor in lista:
+            if valor > num:
+                listaResultado.append(valor)
+        return print ("\n"),mostrarValores(listaResultado, f"Mayores que {num}")
 
-        elif criterio in ["E", "e"]:
-            valor = validarNumero(input("Criterio de filtrado: Menores que:  "))
-            for elem in lista:
-                if elem < valor:
-                    listaResultado.append(elem)
-            return print ("\n"), mostrarValores(listaResultado, f"Menores que {valor}")
-        
-        elif criterio in ["R", "r"]:
-            limInferior = validarNumero(input("Criterio de filtrado: En rango \nIngrese el limite inferior: "))
-            limSuperior = validarNumero(input("Ingrese el limite superior: "))
+    elif criterio == "E":
+        num = validarNumero(input("Criterio de filtrado: Menores que:  "))
+        for valor in lista:
+            if valor < num:
+                listaResultado.append(valor)
+        return print ("\n"), mostrarValores(listaResultado, f"Menores que {num}")
+    
+    elif criterio == "R":
+        desde = validarNumero(input("Criterio de filtrado: En rango \nIngrese el limite inferior: "))
+        hasta = validarNumero(input("Ingrese el limite superior: "))
+        while hasta < desde:
+            print("El limite superior debe ser mayor")
+            hasta = validarNumero(input("Ingrese nuevamente un limite superior: "))
+        for valor in lista:
+            if valor >= desde and valor <= hasta:
+                listaResultado.append(valor)
+        return print ("\n"), mostrarValores(listaResultado, f"VALORES ENTRE {desde} y {hasta}")
+    
+    elif criterio == "P":
+        for valor in lista:
+            if valor % 2 == 0:
+                listaResultado.append(valor)
+        return print ("\n"), mostrarValores(listaResultado, f"VALORES PARES")
 
-            for elem in lista:
-                if elem > limInferior and elem < limSuperior:
-                    listaResultado.append(elem)
-            return print ("\n"), mostrarValores(listaResultado, f"VALORES ENTRE {limInferior} y {limSuperior}")
-        
-        elif criterio in ["P", "p"]:
-            for elem in lista:
-                if elem % 2 == 0:
-                    listaResultado.append(elem)
-            return print ("\n"), mostrarValores(listaResultado, f"VALORES PARES")
+    elif criterio == "I":
+        for valor in lista:
+            if valor % 2 == 1:
+                listaResultado.append(valor)
+        return print ("\n"), mostrarValores(listaResultado, f"VALORES IMPARES")
 
-        elif criterio in ["I", "i"]:
-            for elem in lista:
-                if elem % 2 == 1:
-                    listaResultado.append(elem)
-            return print ("\n"), mostrarValores(listaResultado, f"VALORES IMPARES")
-
-        
-        criterio = input("Valor ingresado incorreco.\nIngrese el criterio de filtrado [M=Mayores que | E=Menores que | R=En rango | P=Pares | I=Impares]: ")
-
+    
 #   TAREA 5 DESDOBLAR VALORES
 '''
 def desdoblarValores(miLista):
@@ -310,10 +383,14 @@ def valoresTop(miLista):
     listaTop = miLista[:]
     listaTop, cant = eliminarRepetidos(listaTop)
     ranking = []
-    n = validarNumero(input("Ingrese cantidad de valores mas altos que desea ver: "))
+    if len(listaTop) == 0:
+        print("No hay valores generados. Use la opción [1] primero.")
+        return
+    
+    n = validarNumero(input("Ingrese la cantidad N para el ranking (top N): "))
     if n > len(listaTop):
         n = len(listaTop)
-        print(f"El valor ingresado es mayor al tamaño de la lista, se cambia el valor ingresado por {n} ")
+        print(f"Hay menos valores únicos que N. Se muestran los {n} disponibles.")
 
     for cont in range(0, n):
         aux = 0
@@ -324,9 +401,17 @@ def valoresTop(miLista):
         for i, elem in enumerate(listaTop):
             if aux == elem:
                 del listaTop[i]
-        
+
+    separador = "*" * 90
+    print(separador)
+    print("VALORES DEL JUEGO DE DATOS (DATOS TOP N)")
+    print(separador)
+
     for i, elem in enumerate(ranking):
         print (f"{i+1}- {elem}")
+
+    fecha_hora = time.strftime("%d-%m-%Y %H:%M:%S")
+    print("FIN DEL LISTADO (" + fecha_hora + ") " + "*" * 51)
 
 #      TAREA 7 MAXIMOS Y MINIMOS
 def Valores_Maximos_Y_Minimos(miLista):
@@ -453,23 +538,26 @@ def main():
         elif opcion == "2":   # Opción 2
             titular("[2] Mostrar valores")
             mostrarValores(miLista, "TODOS LOS DATOS")
-            ...
+
         elif opcion == "3":   # Opción 3
             titular("[3] Eliminar valores repetidos")
             sinRep, contRepetidos = eliminarRepetidos(miLista)
             mostrarValores(sinRep, "DATOS SIN REPETIDOS")
             print (f"\nCANTIDAD DE REPETIDOS ELIMINADOS = {contRepetidos}")
-            ...
+
         elif opcion == "4":   # Opción 4
             titular("[4] Filtrar Valores")
             criterioFiltro(miLista)
+
         elif opcion == "5":   # Opción 5
             titular("[5] Desdoblar Valores")
             desdoblarValores(miLista)
+
         elif opcion == "6":   # Opción 6
             titular("[6] Valores TOP N")
             listaTop, cont = eliminarRepetidos(miLista)
             valoresTop(listaTop)
+
         elif opcion == "7":   # Opción 7
             titular("[7] Valores máximos y mínimos")
             mostrarMaximosMinimos(miLista, f"DATOS MÁXIMOS Y MÍNIMOS [máx] (mín) <máx/mín>")
