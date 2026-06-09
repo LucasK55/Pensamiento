@@ -2,7 +2,7 @@
 -----------------------------------------------------------------------------------------------
 Título: Entrega 1
 Fecha: 11 de mayo
-Autor: Jonathan Lucas Cáceres 
+Autor: 
 
 Descripción:
 
@@ -212,6 +212,13 @@ def eliminarRepetidos(lista):
 
 #   TAREA 4 FILTRAR VALORES
 def criterioFiltro(miLista):
+    '''
+    -Realiza un filtrado segun criterio seleccionado por el usuario: "mayores que", "menores que", "en Rango", "pares", "impares"
+    -Parametros:
+        miLista (list): Lista que se toma de referencia para realizar los criterios de filtrado
+    -Retorno:
+        (print): Imprime la lista en formato de tabla segun el criterio seleccionado.
+    '''
 
     lista = miLista[:]
     listaResultado = []
@@ -264,122 +271,96 @@ def criterioFiltro(miLista):
 
     
 #   TAREA 5 DESDOBLAR VALORES
-'''
 def desdoblarValores(miLista):
-    lista = miLista [:]
-    letra = input("Ingrese el criterio de desdoblamiento [P=Pares/Impares | C=Por cantidad de cifras | U=Por valor umbral]: ")
-    while True:
-        if letra in ["P", "p"]:
-            print("Generando dos listas, una de valores pares y otra de impares: \n")
-            listaPar = [] 
-            listaImpar = []
-            for elem in lista:
-                if elem % 2 == 0:
-                    listaPar.append(elem)
-                else:
-                    listaImpar.append(elem)
-            return mostrarValores(listaPar, f"VALORES DEL JUEGO DE DATOS (PARES)"),print("\n"), mostrarValores(listaImpar, f"VALORES DEL JUEGO DE DATOS (IMPARES)")
-        elif letra in ["C", "c"]:
-            print("Generando tres listas, una con valores de una cifra, la segunda de tres cifras y la tercera de cinco cifras: \n")
-            listaC1 = []
-            listaC3 = []
-            listaC5 = []
-            for elem in lista:
-                if elem >= 0 and elem <=9:
-                    listaC1.append(elem)
-                elif elem >= 100 and elem <= 999:
-                    listaC3.append(elem)
-                elif elem >= 10000 and elem <= 99999:
-                    listaC5.append(elem)
-            return mostrarValores(listaC1, f"VALORES DEL JUEGO DE DATOS (UNA CIFRA)"),print("\n"), mostrarValores(listaC3, f"VALORES DEL JUEGO DE DATOS (TRES CIFRAS)"), print("\n"), mostrarValores(listaC5, "VALORES DEL JUEGO DE DATOS (CINCO CIFRAS)")
-        elif letra in ["U", "u"]:
-            uInferior = []
-            uSuperior = []
-            umbral = validarNumero(input("Ingresar el valor umbral que generará una lista con valores por debajo y otra por encima: "))
-            for elem in lista:
-                if elem > umbral:
-                    uSuperior.append(elem)
-                else:
-                    uInferior.append(elem)
-            return mostrarValores(uInferior, f"VALORES DEL JUEGO DE DATOS (MENORES QUE {umbral})"),print("\n"), mostrarValores(uSuperior, f"VALORES DEL JUEGO DE DATOS (MAYORES QUE ({umbral})")
-'''
-def desdoblarValores(miLista):
-        """
-        Función que a partir de la lista ingresada, pregunta al usuario mediante qué criterios quiere desdoblarla
-        Valida la entrada del usuario y crea varias listas a partir de la original según el criterio elegido
-        retorna las listas segun criterio seleccionado
-        """
-        lista = miLista[:]
-        lista1 = []
-        lista2 = []
-        lista3 = []
-        
+    """
+    Función que a partir de la lista ingresada, pregunta al usuario mediante qué criterios quiere desdoblarla
+    Valida la entrada del usuario y crea varias listas a partir de la original según el criterio elegido
+    retorna las listas segun criterio seleccionado
+    -Parametros: 
+        miLista (list): Lista que se toma de referencia para realizar los criterios de desdoblamiento de listas
+    -Retorno:
+        (print): Imprime la lista en formato de tabla segun el criterio seleccionado.
+    """
+    lista = miLista[:]
+    lista1 = []
+    lista2 = []
+    lista3 = []
+    
+    criterio = input("Ingrese el criterio de desdoblamiento [P=Pares/Impares | C=Por cantidad de cifras | U=Por valor umbral]: ")
+    criterio = criterio.upper()
+    while criterio != "P" and criterio != "C" and criterio != "U":  #criterio not in ["P,"C","U"]
+        print("Valor inválido ingresado, intente de nuevo")
         criterio = input("Ingrese el criterio de desdoblamiento [P=Pares/Impares | C=Por cantidad de cifras | U=Por valor umbral]: ")
         criterio = criterio.upper()
-        while criterio != "P" and criterio != "C" and criterio != "U":  #criterio not in ["P,"C","U"]
-            print("Valor inválido ingresado, intente de nuevo")
-            criterio = input("Ingrese el criterio de desdoblamiento [P=Pares/Impares | C=Por cantidad de cifras | U=Por valor umbral]: ")
-            criterio = criterio.upper()
-            
-        #Validación del umbral
-        if criterio == "U":
+        
+    #Validación del umbral
+    if criterio == "U":
+        umbral = (input("Elija el valor umbral para desdoblar las listas: "))
+        while not umbral.isdigit() or int(umbral) <= 0:
+            print("Valor inválido, intente de nuevo")
             umbral = (input("Elija el valor umbral para desdoblar las listas: "))
-            while not umbral.isdigit() or int(umbral) <= 0:
-                print("Valor inválido, intente de nuevo")
-                umbral = (input("Elija el valor umbral para desdoblar las listas: "))
-            umbral = int(umbral)
-            
-                
-        #Separación de listas por par/impar
-        if criterio == "P":
-            pos = 0
-            while pos < len(lista):
-                if lista[pos] % 2 == 0:
-                    lista1.append(lista[pos])
-                pos = pos + 1
+        umbral = int(umbral)
         
-            pos = 0
-            while pos < len(lista):
-                if lista[pos] % 2 != 0:
-                    lista2.append(lista[pos])
-                pos = pos + 1
-            return print("\n"), mostrarValores(lista1, f"PARES"),print("\n"), mostrarValores(lista2, f"IMPARES")
+            
+    #Separación de listas por par/impar
+    if criterio == "P":
+        pos = 0
+        while pos < len(lista):
+            if lista[pos] % 2 == 0:
+                lista1.append(lista[pos])
+            pos = pos + 1
+    
+        pos = 0
+        while pos < len(lista):
+            if lista[pos] % 2 != 0:
+                lista2.append(lista[pos])
+            pos = pos + 1
+        return print("\n"), mostrarValores(lista1, f"PARES"),print("\n"), mostrarValores(lista2, f"IMPARES")
+    
+    #Separación de listas por umbral
+    elif criterio == "U":
+        pos = 0
+        while pos < len(lista):
+            if (lista[pos]) > umbral:
+                lista1.append(lista[pos])
+            pos = pos + 1
+        pos = 0
+        while pos < len(lista):
+            if (lista[pos]) < umbral:
+                lista2.append(lista[pos])
+            pos = pos + 1
+        return print("\n"),mostrarValores(lista2, f"MENORES QUE {umbral}"),print("\n"), mostrarValores(lista1, f"MAYORES QUE {umbral}")
         
-        #Separación de listas por umbral
-        elif criterio == "U":
-            pos = 0
-            while pos < len(lista):
-                if (lista[pos]) > umbral:
-                    lista1.append(lista[pos])
-                pos = pos + 1
-            pos = 0
-            while pos < len(lista):
-                if (lista[pos]) < umbral:
-                    lista2.append(lista[pos])
-                pos = pos + 1
-            return print("\n"),mostrarValores(lista2, f"MENORES QUE {umbral}"),print("\n"), mostrarValores(lista1, f"MAYORES QUE {umbral}")
-            
-        #Separación de listas por cifras
-        elif criterio == "C":
-            pos = 0
-            while pos < len(lista):
-                if len(str(lista[pos])) == 1:
-                    lista1.append(lista[pos])
-                pos = pos + 1
-            pos = 0
-            while pos < len(lista):
-                if len(str(lista[pos])) == 3:   # == 3
-                    lista2.append(lista[pos])
-                pos = pos + 1
-            pos = 0
-            while pos < len(lista):
-                if len(str(lista[pos])) == 5:   # == 5
-                    lista3.append(lista[pos])
-                pos = pos + 1
-            return print("\n"), mostrarValores(lista1, f"UNA CIFRA"),print("\n"), mostrarValores(lista2, f"TRES CIFRAS"), print("\n"), mostrarValores(lista3, "CINCO CIFRAS")
-            
+    #Separación de listas por cifras
+    elif criterio == "C":
+        pos = 0
+        while pos < len(lista):
+            if len(str(lista[pos])) == 1:
+                lista1.append(lista[pos])
+            pos = pos + 1
+        pos = 0
+        while pos < len(lista):
+            if len(str(lista[pos])) == 3:   # == 3
+                lista2.append(lista[pos])
+            pos = pos + 1
+        pos = 0
+        while pos < len(lista):
+            if len(str(lista[pos])) == 5:   # == 5
+                lista3.append(lista[pos])
+            pos = pos + 1
+        return print("\n"), mostrarValores(lista1, f"UNA CIFRA"),print("\n"), mostrarValores(lista2, f"TRES CIFRAS"), print("\n"), mostrarValores(lista3, "CINCO CIFRAS")
+        
 #   TAREA 6 VALORES TOP N
 def valoresTop(miLista):
+    '''
+    -Presenta un ranking de los N valores mas altos unicos de la lista.
+    N es la cantidad de valores a rankear, validado para que no sea mayor a la lista sin repetidos
+
+    -Parametros:
+        miLista (list): Lista a la cual se le eliminaran los repetidos y se rankeara
+    -Retorno:
+        (None): Imprime la lista rankeada de N valores
+    '''
     listaTop = miLista[:]
     listaTop, cant = eliminarRepetidos(listaTop)
     ranking = []
@@ -415,7 +396,14 @@ def valoresTop(miLista):
 
 #      TAREA 7 MAXIMOS Y MINIMOS
 def Valores_Maximos_Y_Minimos(miLista):
- 
+    '''
+    -Encuentra los valores maximo y minimo de la lista
+    -Parametro:
+        miLista (list): lista donde se busca los valores maximo y minimo
+    -Retorno:
+        (float) maximo: el maximo de la lista
+        (float) minimo: el minimo de la lista
+    '''
     maximo = float("-inf")
     minimo = float("+inf") 
     
@@ -430,7 +418,16 @@ def Valores_Maximos_Y_Minimos(miLista):
     
 
 def mostrarMaximosMinimos(miLista,titulo):
-    filas=0
+    '''
+    -Identifica el valor maximo y minimo de la lista y los destaca segun [max] (min) <igual>
+    y los imprime en formato tabla del punto 2
+    -Parametros:
+        miLista (list): lista de la cual se identifica los valores solicitados
+        titulo (str): Titulo personalizado que detalla VALORES MAXIMOS Y MINIMOS
+    -Retorno:
+        (None): Imprime en formato tabla destacando los valores solicitados
+    '''
+    filas = 0
 
     if len(miLista) == 0: #Cambiar segun funcion 1
         print("No hay valores generados.")
