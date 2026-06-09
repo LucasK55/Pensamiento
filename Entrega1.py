@@ -2,9 +2,13 @@
 -----------------------------------------------------------------------------------------------
 Título: Entrega 1
 Fecha: 11 de mayo
-Autor: 
+Autor:  Jonathan Lucas Cáceres
+        Tomas Villamil
+        Francisco Pasta
+        Santino Godoy
+        Tomas Biglia
 
-Descripción:
+Descripción: Entrega del programa 
 
 Pendientes:
 -----------------------------------------------------------------------------------------------
@@ -523,7 +527,7 @@ def main():
             print("[3] Eliminar Valores Repetidos")
             print("[4] Filtrar Valores")
             print("[5] Desdoblar Valores")
-            print("[6] valores Top N")
+            print("[6] Valores Top N")
             print("[7] Valores Máximos y Mínimos")
             print("---------------------------")
             print("[0] Salir del programa")
