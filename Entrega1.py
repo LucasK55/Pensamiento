@@ -24,6 +24,7 @@ import time, random
 def titular (mensaje):
     '''
     -Imprime un titulo para los encabezados de las opciones
+    
     -Parametros:
         mensaje (str): Mensaje que se desea aplicar el formato
     -Retorno:
@@ -37,6 +38,7 @@ def titular (mensaje):
 def validarNumero(num):
     '''
     -Valida que el dato ingresado pueda ser convertido en un entero
+
     -Parametros:
         num (str): Valor a verificar
     -Retorno:
@@ -52,6 +54,7 @@ def validarNumero(num):
 def validarSiNo(opcion): #Valida que la entrada sea S, N, True o False con sus variantes
     '''
     -Valida que el valor ingresado por el usuario (Si o No) en sus variantes sea reconocido como True or False
+
     -Paramtros:
         opcion (str): valor a verificar
     -Rertorno:
@@ -69,6 +72,7 @@ def validarSiNo(opcion): #Valida que la entrada sea S, N, True o False con sus v
 def validacionNumMayor2(num):
     '''
     -Valida que el dato ingresado pueda ser convertido en un entero y mayor a 2
+
     -Parametros:
         num (str): Valor a verificar entero y mayor a dos
     -Retorno:
@@ -98,6 +102,7 @@ def listarRandom(lista, cantValores):
     Tres valores al azar: el primero de 1 digido, el segundo de 3 digitos y el tercero de 5 digitos
     Elije uno de los 3 al azar y lo agrega a la lista
     Repite hasta que el tamaño de la lista deje de ser menor que la cantidad de valores deseada
+
     -Parametros: 
         lista (list): Lista a la cual se le agregaran los valores
         canValores (int): Cantidad de valores que se le agregara a la lista
@@ -117,6 +122,7 @@ def generarValores(cantValores,lista):
     ''' 
     -Si ya existia una lista generada anteriormente, informa y solicita confirmacion antes de reemplazarla.
     Y si es la primera vez, genera los valores de la lista, usa la funcion anterior listarRandom()
+
     -Parametros:
         cantValores (int): Cantidad de valores a agregar a la lista
         lista (list): Lista a evaluar si ya existia o no, y que sera modificada
@@ -148,6 +154,7 @@ Letras=["A","B","C","D","E","F","G","H","I","J"]
 def mostrarValores(miLista, titulo):
     '''
     -Presenta los valores en formato de tabla encolumnada y cerrada, con 10 valores por fila, repetando el formato de la consigna
+
     -Parametros:
         miLista (list): Lista a dar formato
         titulo (str): Mensaje personalisado para usarlo en otros puntos
@@ -194,6 +201,7 @@ def eliminarRepetidos(lista):
     '''
     - Genera y muestra una nueva lista a partir de la original, eliminando los valores duplicados
     conservando el orden de primera aparición de cada valor, informando tambien cuantos valores fueron eliminados
+
     -Parametros:
         lista (list): Lista a eliminar valores repetidos
     -Retorno:
@@ -214,10 +222,12 @@ def eliminarRepetidos(lista):
 def criterioFiltro(miLista):
     '''
     -Realiza un filtrado segun criterio seleccionado por el usuario: "mayores que", "menores que", "en Rango", "pares", "impares"
+
     -Parametros:
         miLista (list): Lista que se toma de referencia para realizar los criterios de filtrado
     -Retorno:
-        (print): Imprime la lista en formato de tabla segun el criterio seleccionado.
+        (list) listaResultado = Lista filtrada segun criterio
+        (str) mensaje = Mensaje personalizado segun criterio elegido
     '''
 
     lista = miLista[:]
@@ -237,15 +247,16 @@ def criterioFiltro(miLista):
         for valor in lista:
             if valor > num:
                 listaResultado.append(valor)
-        return print ("\n"),mostrarValores(listaResultado, f"Mayores que {num}")
+        mensaje = f"MAYORES QUE {num}"
+        return listaResultado, mensaje
 
     elif criterio == "E":
         num = validarNumero(input("Criterio de filtrado: Menores que:  "))
         for valor in lista:
             if valor < num:
                 listaResultado.append(valor)
-        return print ("\n"), mostrarValores(listaResultado, f"Menores que {num}")
-    
+        mensaje = f"MENORES QUE {num}"
+        return listaResultado, mensaje
     elif criterio == "R":
         desde = validarNumero(input("Criterio de filtrado: En rango \nIngrese el limite inferior: "))
         hasta = validarNumero(input("Ingrese el limite superior: "))
@@ -255,20 +266,21 @@ def criterioFiltro(miLista):
         for valor in lista:
             if valor >= desde and valor <= hasta:
                 listaResultado.append(valor)
-        return print ("\n"), mostrarValores(listaResultado, f"VALORES ENTRE {desde} y {hasta}")
+        mensaje = f"VALORES ENTRE {desde} y {hasta}"
+        return listaResultado, mensaje 
     
     elif criterio == "P":
         for valor in lista:
             if valor % 2 == 0:
                 listaResultado.append(valor)
-        return print ("\n"), mostrarValores(listaResultado, f"VALORES PARES")
-
+        mensaje = f"VALORES PARES"
+        return listaResultado, mensaje
     elif criterio == "I":
         for valor in lista:
             if valor % 2 == 1:
                 listaResultado.append(valor)
-        return print ("\n"), mostrarValores(listaResultado, f"VALORES IMPARES")
-
+        mensaje = f"VALORES IMPARES"
+        return listaResultado, mensaje
     
 #   TAREA 5 DESDOBLAR VALORES
 def desdoblarValores(miLista):
@@ -276,10 +288,12 @@ def desdoblarValores(miLista):
     Función que a partir de la lista ingresada, pregunta al usuario mediante qué criterios quiere desdoblarla
     Valida la entrada del usuario y crea varias listas a partir de la original según el criterio elegido
     retorna las listas segun criterio seleccionado
+
     -Parametros: 
         miLista (list): Lista que se toma de referencia para realizar los criterios de desdoblamiento de listas
     -Retorno:
-        (print): Imprime la lista en formato de tabla segun el criterio seleccionado.
+        (list): Lista de listas desdobladas segun criterio 
+        (list): Lista con mensajes personalizados para cada listas de las primera
     """
     lista = miLista[:]
     lista1 = []
@@ -315,7 +329,7 @@ def desdoblarValores(miLista):
             if lista[pos] % 2 != 0:
                 lista2.append(lista[pos])
             pos = pos + 1
-        return print("\n"), mostrarValores(lista1, f"PARES"),print("\n"), mostrarValores(lista2, f"IMPARES")
+        return [lista1, lista2], ["PARES", "IMPARES"]
     
     #Separación de listas por umbral
     elif criterio == "U":
@@ -329,8 +343,7 @@ def desdoblarValores(miLista):
             if (lista[pos]) < umbral:
                 lista2.append(lista[pos])
             pos = pos + 1
-        return print("\n"),mostrarValores(lista2, f"MENORES QUE {umbral}"),print("\n"), mostrarValores(lista1, f"MAYORES QUE {umbral}")
-        
+        return [lista2, lista1], [f"MENORES QUE {umbral}", f"MAYORES QUE {umbral}"]        
     #Separación de listas por cifras
     elif criterio == "C":
         pos = 0
@@ -348,8 +361,7 @@ def desdoblarValores(miLista):
             if len(str(lista[pos])) == 5:   # == 5
                 lista3.append(lista[pos])
             pos = pos + 1
-        return print("\n"), mostrarValores(lista1, f"UNA CIFRA"),print("\n"), mostrarValores(lista2, f"TRES CIFRAS"), print("\n"), mostrarValores(lista3, "CINCO CIFRAS")
-        
+        return [lista1, lista2, lista3], ["UNA CIFRA", "TRES CIFRAS", "CINCO CIFRAS"]        
 #   TAREA 6 VALORES TOP N
 def valoresTop(miLista):
     '''
@@ -384,6 +396,7 @@ def valoresTop(miLista):
                 del listaTop[i]
 
     separador = "*" * 90
+    print()
     print(separador)
     print("VALORES DEL JUEGO DE DATOS (DATOS TOP N)")
     print(separador)
@@ -398,6 +411,7 @@ def valoresTop(miLista):
 def Valores_Maximos_Y_Minimos(miLista):
     '''
     -Encuentra los valores maximo y minimo de la lista
+
     -Parametro:
         miLista (list): lista donde se busca los valores maximo y minimo
     -Retorno:
@@ -421,6 +435,7 @@ def mostrarMaximosMinimos(miLista,titulo):
     '''
     -Identifica el valor maximo y minimo de la lista y los destaca segun [max] (min) <igual>
     y los imprime en formato tabla del punto 2
+
     -Parametros:
         miLista (list): lista de la cual se identifica los valores solicitados
         titulo (str): Titulo personalizado que detalla VALORES MAXIMOS Y MINIMOS
@@ -544,11 +559,17 @@ def main():
 
         elif opcion == "4":   # Opción 4
             titular("[4] Filtrar Valores")
-            criterioFiltro(miLista)
-
+            listaFiltrada, mensaje = criterioFiltro(miLista)
+            print()
+            mostrarValores(listaFiltrada, mensaje)
         elif opcion == "5":   # Opción 5
             titular("[5] Desdoblar Valores")
-            desdoblarValores(miLista)
+            listas, mensajes = desdoblarValores(miLista)
+            print()
+            for i, lista in enumerate(listas):
+                mensaje = mensajes[i]
+                mostrarValores(lista, mensaje)
+                print()
 
         elif opcion == "6":   # Opción 6
             titular("[6] Valores TOP N")
