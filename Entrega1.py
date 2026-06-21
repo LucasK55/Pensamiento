@@ -237,8 +237,7 @@ def criterioFiltro(miLista):
     lista = miLista[:]
     listaResultado = []
     if len(lista) == 0:
-        print("No hay valores generados")
-        return
+        return [], "SIN DATOS"
     criterio = input("Ingrese el criterio de filtrado [M=Mayores que | E=Menores que | R=En rango | P=Pares | I=Impares]: ")
     criterio = criterio.upper()
     while criterio != "M" and criterio != "E" and criterio != "R" and criterio != "P" and criterio != "I":
@@ -303,7 +302,10 @@ def desdoblarValores(miLista):
     lista1 = []
     lista2 = []
     lista3 = []
-    
+
+    if len(lista) == 0:
+        return [], []
+       
     criterio = input("Ingrese el criterio de desdoblamiento [P=Pares/Impares | C=Por cantidad de cifras | U=Por valor umbral]: ")
     criterio = criterio.upper()
     while criterio != "P" and criterio != "C" and criterio != "U":  #criterio not in ["P,"C","U"]
@@ -344,10 +346,10 @@ def desdoblarValores(miLista):
             pos = pos + 1
         pos = 0
         while pos < len(lista):
-            if (lista[pos]) < umbral:
+            if (lista[pos]) <= umbral:
                 lista2.append(lista[pos])
             pos = pos + 1
-        return [lista2, lista1], [f"MENORES QUE {umbral}", f"MAYORES QUE {umbral}"]        
+        return [lista2, lista1], [f"VALORES HASTA {umbral}", f"MAYORES QUE {umbral}"]        
     #Separación de listas por cifras
     elif criterio == "C":
         pos = 0
@@ -570,10 +572,13 @@ def main():
             titular("[5] Desdoblar Valores")
             listas, mensajes = desdoblarValores(miLista)
             print()
-            for i, lista in enumerate(listas):
-                mensaje = mensajes[i]
-                mostrarValores(lista, mensaje)
-                print()
+            if len(listas) == 0:
+                mostrarValores(listas, mensajes)
+            else:
+                for i, lista in enumerate(listas):
+                    mensaje = mensajes[i]
+                    mostrarValores(lista, mensaje)
+                    print()
 
         elif opcion == "6":   # Opción 6
             titular("[6] Valores TOP N")
