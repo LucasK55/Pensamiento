@@ -122,7 +122,7 @@ def listarRandom(lista, cantValores):
         valor = random.choice(valores)
         lista.append(valor) # Agrega el valor a la lista
 
-def generarValores(cantValores,lista):
+def generarValores(lista):
     ''' 
     -Si ya existia una lista generada anteriormente, informa y solicita confirmacion antes de reemplazarla.
     Y si es la primera vez, genera los valores de la lista, usa la funcion anterior listarRandom()
@@ -134,21 +134,28 @@ def generarValores(cantValores,lista):
         (list): lista modificada o no segun eleccion
         (print): En el caso de Error, o si no se elige modificar una lista ya creada
     '''
-    if lista:
-        eleccion =validarSiNo(input("Lista ya creada anteriormente, desea generar una nueva lista? (S/N): "))
-        if eleccion:
-            listaNuevaVacia = [] # Crea una nueva lista
-            listarRandom(listaNuevaVacia, cantValores)
-            lista = listaNuevaVacia # Asigna la nueva lista a la variable original
-    
-        else:
-            print("No se generará una nueva lista.") 
-    else:
+    if not lista:
+        cantValores = input("Ingrese la cantidad de valores a generar: ")
+        cantValores = validacionNumMayor2(cantValores)
         print("Primera vez que se crea la lista")
         print()
         listarRandom(lista, cantValores)
         if lista: print("Lista creada correctamente.")
         else: print("ERROR al crear la lista")
+        
+    else:
+        eleccion = validarSiNo(input("Lista ya creada anteriormente, desea generar una nueva lista? (S/N): "))
+        if eleccion:
+            listaNuevaVacia = [] # Crea una nueva lista
+            cantValores = input("Ingrese la cantidad de valores a generar: ")
+            cantValores = validacionNumMayor2(cantValores)
+            listarRandom(listaNuevaVacia, cantValores)
+            lista = listaNuevaVacia # Asigna la nueva lista a la variable original
+            if lista: print("Lista creada correctamente.")
+            else: print("ERROR al crear la lista")
+    
+        else:
+            print("No se generará una nueva lista.") 
 
     return lista
 
@@ -548,9 +555,7 @@ def main():
 
         elif opcion == "1":   # Opción 1
             titular("[1] Generar valores")
-            cantValores = input("Ingrese la cantidad de valores a generar: ")
-            cantValores = validacionNumMayor2(cantValores)
-            miLista = generarValores(cantValores,miLista)
+            miLista = generarValores(miLista)
             
          
         elif opcion == "2":   # Opción 2
