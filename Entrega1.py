@@ -455,56 +455,31 @@ def mostrarMaximosMinimos(miLista,titulo):
     -Retorno:
         (None): Imprime en formato tabla destacando los valores solicitados
     '''
-    filas = 0
-
-    if len(miLista) == 0: #Cambiar segun funcion 1
+    if len(miLista) == 0: 
         print("No hay valores generados.")
-    else:
+        return
 
-        print("*" * 90)
-        print(F"VALORES DEL JUEGO DE DATOS ({titulo})")
-        print("*" * 90)
+    maximo,minimo=Valores_Maximos_Y_Minimos(miLista)
 
-        guion="="*7
+    listaMaxMin= []
 
-        for letra in Letras:
-            print(letra.center(9), end="")
+    for numero in miLista:
+        if maximo==minimo:
+            texto="<" + str(numero).center(5) + ">"
 
-        print()
+        elif numero == maximo:
+            texto = "[" + str(numero).center(5) + "]"
 
-        for i in range(10):
-            print(guion.center(9),end="")
-
-        print()
-
-        maximo,minimo=Valores_Maximos_Y_Minimos(miLista)
-
-        for numero in miLista:
-            if maximo==minimo:
-                texto="<" + str(numero).center(5) + ">"
-
-            elif numero == maximo:
-                texto = "[" + str(numero).center(5) + "]"
-
-            elif numero == minimo:
-                texto = "(" + str(numero).center(5) + ")"
+        elif numero == minimo:
+            texto = "(" + str(numero).center(5) + ")"
 
 
-            else:
-                texto = str(numero)
+        else:
+            texto = str(numero)
 
-            print(texto.center(9), end="")
+        listaMaxMin.append(texto)
 
-            filas=filas+1
-
-            if filas==10:
-                print()
-                filas=0
-
-        print()
-
-        fechaHora = time.strftime("%d-%m-%Y %H:%M:%S")
-        print("FIN DEL LISTADO (" + fechaHora + ") " + "*" * 52) 
+    mostrarValores(listaMaxMin,titulo)
 
             
 
