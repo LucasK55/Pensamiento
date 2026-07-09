@@ -481,7 +481,251 @@ def mostrarMaximosMinimos(miLista,titulo):
 
     mostrarValores(listaMaxMin,titulo)
 
-            
+#PARTE 2 TP / ORDENAR Y BUSCAR VALORES
+        
+def ordenarValores(lista):
+    listaTrabajo = lista[:]
+    validos = ["B","S","I","b","s","i"]
+
+    if len (listaTrabajo) == 0:
+        return [], [], []
+    
+
+    algoritmo = input("Ingrese el algoritmo de ordenamiento a ejecutar [B=Intercambio/Burbuja | S=Selección | I=Inserción]: ")
+    while algoritmo not in validos:
+        print("Valor incorrecto, intente de nuevo")
+        algoritmo = input("Ingrese el algoritmo de ordenamiento a ejecutar [B=Intercambio/Burbuja | S=Selección | I=Inserción]: ")
+    
+    algoritmo = algoritmo.upper()
+    
+    if algoritmo == "B":
+        tipoOrden = ("ORDENAMIENTO POR INTERCAMBIO/BURBUJA")
+        inicio = time.perf_counter()
+        listaOrdenada = ordenamientoPorIntercambioMejorada(listaTrabajo)
+        fin = time.perf_counter()
+
+
+    elif algoritmo == "S":
+        tipoOrden = ("BÚSQUEDA SELECCIÓN")
+        inicio = time.perf_counter()
+        listaOrdenada = ordenamientoPorSeleccion(listaTrabajo)
+        fin = time.perf_counter()
+
+        
+    elif algoritmo == "I":
+         tipoOrden = ("BÚSQUEDA INSERCIÓN")
+         inicio = time.perf_counter()
+         listaOrdenada = ordenamientoPorInsercion(listaTrabajo)
+         fin = time.perf_counter()
+
+
+    return listaOrdenada, tipoOrden, fin - inicio
+
+
+def ordenamientoPorIntercambioMejorada(lista):
+    """
+    Devuelve ordenada la lista recibida por parámetro
+    Parámetros:
+        lista (list)    Lista a ordenar
+    """
+    # Se asume que habrá intercambios
+    huboIntercambio = True 
+    # La cantidad inicial de comparaciones es el tamaño de la lista - 1
+    comparaciones = len(lista) - 1
+    while huboIntercambio and comparaciones > 0:
+        huboIntercambio = False  # Antes de realizar las comparaciones se asume que no habrá intercambios
+        for posElem in range(comparaciones):  # Realiza las comparaciones entre parejas de elementos
+            if lista[posElem] > lista[posElem + 1]:  # Si izq. es mayor que der. entonces intercambiarlos
+                lista[posElem], lista[posElem + 1] = lista[posElem + 1], lista[posElem]  # Intercambio
+                huboIntercambio = True  # Sólo si entra en el if se marca que hubo intercambio
+        comparaciones = comparaciones - 1  # Las comparaciones en cada pasada son una menos
+    return lista
+    
+    
+def ordenamientoPorSeleccion(lista):
+    """
+    Devuelve ordenada la lista recibida por parámetro
+    Parámetros:
+        lista (list)    Lista a ordenar
+    """
+    # Inicialmente, la posición definitiva del elemento mayor es la última posición de la lista
+    for destinoDelMayor in range(len(lista) - 1, 0, -1):  # En cada iteración esta posición va retrocendiendo de a uno
+        posicionDelMayor = 0  # Comienza considerando que el primer elemento de la lista es el mayor
+        for posElem in range(1, destinoDelMayor + 1):  # Realiza las comparaciones entre cada elemento y el mayor actual
+            if lista[posElem] > lista[posicionDelMayor]:  # Si el elemento actual es mayor que el mayor ...
+                posicionDelMayor = posElem  # Entonces el nuevo mayor es el elemento actual (esta es la técnica de ubicar un máximo)
+        # El intercambio se da entre el destino definitivo del mayor y el elemento mayor encontrado
+        lista[posicionDelMayor], lista[destinoDelMayor] = lista[destinoDelMayor], lista[posicionDelMayor]
+    return lista
+    
+    
+def ordenamientoPorInsercion(lista):
+    """
+    Devuelve ordenada la lista recibida por parámetro
+    Parámetros:
+        lista (list)    Lista a ordenar
+    """
+    # El primer elemento de la lista se considera sublista ordenada, se inicia entonces tomando el segundo elemento de la lista
+    for posActual in range(1, len(lista)):  # En cada iteración pasa al siguiente elemento, hasta llegar al último
+        elem = lista[posActual]  # Toma el elemento actual
+        posElem = posActual  # La variable posición actual es copiada en otra variable para poder decrementarla sin afectar a la primera
+        while posElem > 0 and lista[posElem - 1] > elem:  # Repite las veces necesarias hasta encontrar el lugar de inserción del elemento actual
+            lista[posElem] = lista[posElem - 1]  # Mueve cada elemento de la sublista una posición a la derecha para hacer lugar
+            posElem = posElem - 1  # Sigue retrocediendo
+        # Mueve el elemento actual al espacio liberado en la sublista quedando perfectamente ordenado en ella
+        lista[posElem] = elem
+    return lista
+    
+#   TAREA 9 COMPARAR ALGORITMOS DE BÚSQUEDA
+def busquedaSecuencialTodasPosiciones(lista, valorBuscado):
+    """
+    -Busca un valor en la lista usando búsqueda secuencial y guarda todas las posiciones
+    donde aparece.
+
+    -Parámetros:
+        lista (list): Lista donde se buscará el valor.
+        valorBuscado (int): Valor entero que se desea buscar.
+
+    -Retorno:
+        (list): Lista con las posiciones donde se encontró el valor.
+    """
+    posiciones = []
+
+    for pos in range(len(lista)):
+        if lista[pos] == valorBuscado:
+            posiciones.append(pos)
+
+    return posiciones
+    
+def busquedaBinariaTodasPosiciones(lista,valorBuscado):
+    """
+    -Busca un valor en una lista ordenada usando búsqueda binaria. Si el valor aparece
+    varias veces, devuelve todas sus posiciones.
+
+    -Parámetros:
+        lista (list): Lista ordenada donde se buscará el valor.
+        valorBuscado (int): Valor entero que se desea buscar.
+
+    -Retorno:
+        (list): Lista con las posiciones donde se encontró el valor.
+    """
+    posiciones = []
+    izquierda = 0
+    derecha = len(lista) - 1
+    encontrada = -1
+
+    while izquierda <= derecha and encontrada == -1:
+        medio = (izquierda + derecha) // 2
+
+        if lista[medio] == valorBuscado:
+            encontrada = medio
+        elif valorBuscado < lista[medio]:
+            derecha = medio - 1
+        else:
+            izquierda = medio + 1
+
+    if encontrada != -1:
+        pos = encontrada
+
+        # Retrocede hasta la primera aparición del valor
+        while pos > 0 and lista[pos - 1] == valorBuscado:
+            pos = pos - 1
+
+        # Desde la primera aparición, guarda todas las posiciones
+        while pos < len(lista) and lista[pos] == valorBuscado:
+            posiciones.append(pos)
+            pos = pos + 1
+
+    return posiciones
+    
+def mostrarResultadoBusqueda(titulo, valorBuscado, posiciones, tiempo):
+    """
+    -Muestra el resultado de una búsqueda, indicando cuántas veces fue encontrado
+    el valor, en qué posiciones aparece y el tiempo empleado.
+
+    -Parámetros:
+        titulo (str): Nombre de la búsqueda realizada.8
+        valorBuscado (int): Valor que se buscó en la lista.
+        posiciones (list): Lista con las posiciones donde se encontró el valor.
+        tiempo (float): Tiempo empleado en segundos.
+
+    -Retorno:
+        (None): Imprime el resultado de la búsqueda por pantalla.
+    """
+    print("*" * 90)
+    print(titulo)
+    print("*" * 90)
+
+    print(f"Veces que el valor {valorBuscado} fue encontrado: {len(posiciones)}")
+    print(f"Posiciones donde el valor {valorBuscado} fue encontrado: {posiciones}")
+    print(f"Tiempo empleado [ms]: {tiempo * 1000:.2f}")
+
+def buscarValor(lista):
+    """
+    -Ejecuta la opción 9 del menú. Permite elegir entre búsqueda secuencial o binaria,
+    valida la opción ingresada, solicita el valor a buscar y muestra el resultado.
+
+    -Parámetros:
+        lista (list): Lista original donde se va a buscar el valor.
+
+    -Retorno:
+        (None): Ejecuta la búsqueda seleccionada e imprime el resultado por pantalla.
+    """
+    if len(lista) == 0:
+        print("No hay valores generados. Use la opción [1] primero.")
+        return
+
+    listaTrabajo = lista[:]
+
+    algoritmo = input("Ingrese el algoritmo de búsqueda a ejecutar [S=Secuencial | B=Binaria]: ")
+    algoritmo = algoritmo.upper()
+
+    while algoritmo != "S" and algoritmo != "B":
+        print("Valor incorrecto. Intente nuevamente.")
+        algoritmo = input("Ingrese el algoritmo de búsqueda a ejecutar [S=Secuencial | B=Binaria]: ")
+        algoritmo = algoritmo.upper()
+
+    if algoritmo == "S":
+        valorBuscado = validarNumero(input("Ingrese el valor a buscar: "))
+
+        print("Buscando...")
+        inicio = time.perf_counter()
+        posiciones = busquedaSecuencialTodasPosiciones(listaTrabajo, valorBuscado)
+        fin = time.perf_counter()
+
+        mostrarResultadoBusqueda("BÚSQUEDA SECUENCIAL", valorBuscado, posiciones, fin - inicio)
+
+    elif algoritmo == "B":
+        estaOrdenada = all(listaTrabajo[i] <= listaTrabajo[i + 1] for i in range(len(listaTrabajo) - 1))
+
+        if estaOrdenada == False:
+            print("La lista no está Sordenada.")
+            print("Para usar búsqueda binaria primero es necesario ordenar la lista.")
+
+            respuesta = input("¿Desea continuar y ordenar la lista? (S/N): ")
+            respuesta = respuesta.upper()
+
+            while respuesta != "S" and respuesta != "N":
+                print("Respuesta inválida. Ingrese S o N.")
+                respuesta = validarSiNo("¿Desea continuar y ordenar la lista? (S/N): ")
+                respuesta = respuesta.upper()
+
+            if respuesta == "N":
+                print("No se realizó la búsqueda.")
+                return
+
+            print("Ordenando la lista por selección...")
+            listaTrabajo = ordenamientoPorSeleccion(listaTrabajo)
+
+        valorBuscado = validarNumero(input("Ingrese el valor a buscar: "))
+
+        print("Buscando...")
+        inicio = time.perf_counter()
+        posiciones = busquedaBinariaTodasPosiciones(listaTrabajo, valorBuscado)
+        fin = time.perf_counter()
+
+        mostrarResultadoBusqueda("BÚSQUEDA BINARIA", valorBuscado, posiciones, fin - inicio)
+  
 
 
 
@@ -501,7 +745,7 @@ def main():
     #----------------------------------------------------------------------------------------------
     while True:
         while True:
-            opciones = 7
+            opciones = 9
             print()
             print("---------------------------")
             print("MENÚ DEL PROGRAMA           ")
@@ -513,6 +757,8 @@ def main():
             print("[5] Desdoblar Valores")
             print("[6] Valores Top N")
             print("[7] Valores Máximos y Mínimos")
+            print("[8] Ordenar Valores")
+            print("[9] Buscar Valores")
             print("---------------------------")
             print("[0] Salir del programa")
             print("---------------------------")
@@ -568,6 +814,17 @@ def main():
         elif opcion == "7":   # Opción 7
             titular("[7] Valores máximos y mínimos")
             mostrarMaximosMinimos(miLista, f"DATOS MÁXIMOS Y MÍNIMOS [máx] (mín) <máx/mín>")
+
+        elif opcion == "8":   # Opción 8
+            titular("[8] Ordenar Valores")
+            mensaje = ("")
+            ordenada, mensaje, tiempo = ordenarValores(miLista)
+            mostrarValores(ordenada, mensaje)
+            if ordenada: print(f"Tiempo empleado [ms]: {tiempo * 1000:.2f}")
+        
+        elif opcion == "9":   # Opción 9
+            titular("[9] Buscar Valor")
+            buscarValor(miLista)
 
 
         input("\nPresione ENTER para volver al menú.")
